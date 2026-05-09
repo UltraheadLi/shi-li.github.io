@@ -1,0 +1,17 @@
+#.DS_Store
+Thumbs.db
+desktop.ini
+
+.vscode/
+*.code-workspace
+.history/
+
+# assets/raw/
+# *.psd
+# *.ai
+
+# ls.jpg
+
+*.log
+npm-debug.log*
+.eslintcache

@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Homepage</title>
+    <style>
+        :root {
+            /* Explicitly set to #ebeef5 */
+            --bg-color: #ebeef5;
+            --glass-bg: rgba(255, 255, 255, 0.6);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.4);
+            --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 16px 48px rgba(0, 0, 0, 0.12);
+            --text-main: #1d1d1f;
+            --text-secondary: #515154;
+            --spring: cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "PingFang SC", sans-serif;
+            background-color: var(--bg-color); /* Applied #ebeef5 here */
+            color: var(--text-main);
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        h1, h2, h3 {
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        p, li, span {
+            font-weight: 400;
+            line-height: 1.5;
+            color: var(--text-secondary);
+        }
+
+        /* Ambient Orbs - Opacity reduced so #ebeef5 background is visible */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            animation: float 20s infinite alternate var(--spring);
+        }
+
+        .orb-1 {
+            width: 50vw;
+            height: 50vw;
+            background: rgba(162, 210, 255, 0.15); /* Lowered opacity */
+            top: -10vw;
+            left: -10vw;
+        }
+
+        .orb-2 {
+            width: 40vw;
+            height: 40vw;
+            background: rgba(200, 180, 255, 0.15); /* Lowered opacity */
+            bottom: 10vw;
+            right: -5vw;
+            animation-duration: 25s;
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(5%, 10%) scale(1.05); }
+            100% { transform: translate(-5%, -5%) scale(0.95); }
+        }
+
+        /* Top Controls */
+        .header {
+            width: 100%;
+            max-width: 1000px;
+            padding: 32px 24px;
+            display: flex;
+            justify-content: flex-end;
+            z-index: 10;
+        }
+
+        .lang-toggle {
+            display: flex;
+            align-items: center;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: var(--glass-border);
+            border-radius: 30px;
+            padding: 4px;
+            cursor: pointer;
+            position: relative;
+            box-shadow: var(--shadow-soft);
+            width: 90px;
+            height: 36px;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            width: 40px;
+            height: 28px;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.4s var(--spring);
+        }
+
+        .toggle-text {
+            flex: 1;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+            z-index: 1;
+            user-select: none;
+            color: var(--text-main);
+        }
+
+        [data-lang="zh"] .toggle-slider {
+            transform: translateX(42px);
+        }
+
+        /* Hero Section */
+        .hero {
+            width: 100%;
+            max-width: 1000px;
+            padding: 20px 24px 60px 24px;
+            display: flex;
+            align-items: center;
+            gap: 48px;
+            z-index: 1;
+        }
+
+        .photo-space {
+            width: 200px;
+            height: 200px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: var(--glass-border);
+            border-radius: 50%;
+            box-shadow: var(--shadow-soft);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .photo-space-text {
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .hero-info {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .hero-name {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+        }
+
+        .hero-identity {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .hero-research {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            background: #0071e3;
+            color: white !important;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s var(--spring);
+            align-self: flex-start;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 16px;
+            margin-top: 0;
+        }
+        .social-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--glass-bg);
+            border: var(--glass-border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.3s var(--spring);
+            text-decoration: none;
+        }
+        .social-icon:hover {
+            transform: translateY(-3px) scale(1.05);
+            background: #ffffff;
+            box-shadow: var(--shadow-soft);
+            color: #0071e3;
+        }
+
+        .btn:hover {
+            background: #0077ED;
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+        }
+
+        /* Bento Grid */
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 120px;
+            z-index: 1;
+        }
+
+        /* Clickable and Scrollable Cards */
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: var(--glass-border);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.4s var(--spring);
+            display: flex;
+            flex-direction: column;
+            
+            /* Make the block act as a clickable link container */
+            text-decoration: none; 
+            color: inherit;
+            cursor: pointer;
+            
+            /* Contain lots of content with a scrollbar */
+            max-height: 350px; 
+            overflow-y: auto; 
+        }
+
+        .card:hover {
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: var(--shadow-hover);
+            border-color: rgba(0, 113, 227, 0.3); /* Slight blue border on hover to indicate clickability */
+        }
+
+        /* Custom subtle scrollbar for the cards */
+        .card::-webkit-scrollbar {
+            width: 6px;
+        }
+        .card::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .card::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+        }
+        .card::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .mac-dots {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            position: sticky; /* Keeps dots at the top even when scrolling */
+            top: 0;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot.red { background: #FF5F57; }
+        .dot.yellow { background: #FEBC2E; }
+        .dot.green { background: #28C840; }
+
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+            color: var(--text-main);
+        }
+
+        .card-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            margin-top: 4px;
+        }
+
+        .list-items {
+            list-style: none;
+        }
+
+        .list-items li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 12px;
+        }
+
+        .list-items li::before {
+            content: "•";
+            color: #0071e3;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .date-badge {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #0071e3;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        /* macOS Dock */
+        .dock {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 16px;
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 24px;
+            padding: 12px 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .dock-item {
+            width: 50px;
+            height: 50px;
+            background: #ffffff;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.3s var(--spring);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            text-decoration: none;
+            color: var(--text-main);
+            position: relative;
+        }
+
+        .dock-item:hover {
+            transform: scale(1.2) translateY(-6px);
+            z-index: 2;
+        }
+
+        .dock-item svg {
+            width: 24px;
+            height: 24px;
+            stroke-width: 2;
+            stroke: currentColor;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Language Toggle Classes */
+        .zh { display: none; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                gap: 24px;
+                padding-bottom: 40px;
+            }
+            .btn {
+                align-self: center;
+            }
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .dock {
+                bottom: 16px;
+                padding: 10px 12px;
+                gap: 12px;
+            }
+            .dock-item {
+                width: 44px;
+                height: 44px;
+            }
+        }
+
+        .read-more-link {
+            color: #0071e3;
+            text-decoration: none !important;
+            border-bottom: none;
+            font-weight: 600;
+            font-size: 14px;
+            display: inline-block;
+            transition: transform 0.3s var(--spring);
+        }
+
+        .read-more-link:hover {
+            transform: translateX(6px);
+            color: #005bb7;
+        }
+
+    </style>
+</head>
+<body data-lang="en">
+
+    <header class="header">
+        <div class="lang-toggle" onclick="toggleLanguage()">
+            <div class="toggle-slider"></div>
+            <span class="toggle-text">EN</span>
+            <span class="toggle-text">中</span>
+        </div>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="photo-space">
+            <img src="ls.jpg" alt="Shi Li" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        <div class="hero-info">
+            <h1 class="hero-name">
+                <span class="en">Shi Li</span>
+                <span class="zh">李 适</span>
+            </h1>
+            <h2 class="hero-identity">
+                <span class="en">Master in Applied Econometrics, Monash University</span>
+                <span class="zh">应用计量经济学硕士, 蒙纳士大学</span>
+            </h2>
+            <p class="hero-research">
+                <span class="en"><strong>Research Interests:</strong> Econometrics.</span>
+                <span class="zh"><strong>研究兴趣：</strong> 计量经济学。</span>
+            </p>
+            <div style="display: flex; gap: 16px; align-items: center; margin-top: 8px;">
+    <a href="cv.pdf" class="btn" target="_blank">
+        <span class="en">Download CV</span>
+        <span class="zh">下载简历</span>
+    </a>
+
+    <div class="social-links">
+        <div class="social-icon" title="Copy Email" onclick="copyEmail()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+        </div>
+        
+        <a href="https://github.com/UltraheadLi" target="_blank" class="social-icon" title="GitHub">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+        </a>
+    </div>
+</div>
+        </div>
+    </section>
+
+    <main class="container">
+        
+        <div class="card" id="experiences" >
+            <div class="mac-dots">
+                <div class="dot red"></div>
+                <div class="dot yellow"></div>
+                <div class="dot green"></div>
+            </div>
+            <h2 class="card-title">
+                <span class="en">Experiences</span>
+                <span class="zh">个人经历</span>
+            </h2>
+            <h3 class="card-subtitle">
+                <span class="en">Education</span>
+                <span class="zh">教育背景</span>
+            </h3>
+            <ul class="list-items">
+                <li>
+                    <span class="en"><strong>Monash University:</strong> Master of Applied Econometrics (2025 March - Present)</span>
+                    <span class="zh"><strong>蒙纳士大学：</strong> 应用计量经济学硕士 (2025 March - Present)</span>
+                </li>
+                <li>
+                    <span class="en"><strong>Jinan University:</strong> Bachelor of Financial Management (2020 - 2024)</span>
+                    <span class="zh"><strong>暨南大学：</strong> 财务管理学士 (2020 - 2024)</span>
+                </li>
+            </ul>
+            
+            <div style="margin-top: auto; padding-top: 20px;">
+                <a href="experiences.html" class="read-more-link">
+                    <span class="en">View Details →</span>
+                    <span class="zh">查看详情 →</span>
+                </a>
+            </div>
+            
+        </div>
+
+       <div class="card" id="research">
+            <h2 class="card-title">
+                <span class="en">Research</span>
+                <span class="zh">研究方向</span>
+            </h2>
+            <ul class="list-items">
+                <li>
+                    <span class="en">
+                        <strong>Current:</strong> 
+                        <a href="https://github.com/UltraheadLi/mis_project_m" target="_blank" style="color: #0071e3; text-decoration: none;">Most Influential Sets</a>, Sensitivity in Statistical Models and Applications. Supervised by 
+                        <a href="https://www.kuschnig.eu/" target="_blank" style="color: #0071e3; text-decoration: none; font-weight: bold;">Dr. Nikolas Kuschnig</a>.
+                    </span>
+
+                    <span class="zh">
+                        <strong>当前研究：</strong> 
+                        <a href="https://github.com/UltraheadLi/mis_project_m" target="_blank" style="color: #0071e3; text-decoration: none;">最具影响力的数据集</a>，统计模型与应用中的敏感性。导师：
+                        <a href="https://www.kuschnig.eu/" target="_blank" style="color: #0071e3; text-decoration: none; font-weight: bold;">Nikolas Kuschnig 博士</a>。
+                    </span>
+                </li>
+            </ul>
+
+            <div style="margin-top: auto; padding-top: 20px;">
+                <a href="research.html" class="read-more-link">
+                    <span class="en">View Details →</span>
+                    <span class="zh">查看详情 →</span>
+                </a>
+            </div>
+            
+        </div>
+
+        <div class="card" id="blog">
+            <h2 class="card-title">
+                <span class="en">Blog</span>
+                <span class="zh">博客</span>
+            </h2>
+            <ul class="list-items">
+                <li>
+                    <span class="en">Extreme Value Theory</span>
+                    <span class="zh">极值理论.</span>
+                </li>
+            </ul>
+            
+            <div style="margin-top: auto; padding-top: 20px;">
+                <a href="blog.html" class="read-more-link">
+                    <span class="en">View Details →</span>
+                    <span class="zh">查看详情 →</span>
+                </a>
+            </div>
+            
+        </div>
+
+        <div class="card" id="news" >
+            <h2 class="card-title">
+                <span class="en">Latest News</span>
+                <span class="zh">最新动态</span>
+            </h2>
+            <ul class="list-items" style="padding-left: 0;">
+                <li style="padding-left: 0;">
+                    <span class="date-badge en">April 2025</span>
+                    <span class="date-badge zh">2025年4月</span>
+                    <span class="en">Formally start my honors project on "Most Influential Sets in Statistical Models", Supervised by Dr. Nikolas Kuschnig.</span>
+                    <span class="zh">正式开始我的荣誉论文研究，主题为“统计模型中的最具影响力数据集”。</span>
+                </li>
+            </ul>
+             <div style="margin-top: auto; padding-top: 20px;">
+                <a href="news.html" class="read-more-link">
+                    <span class="en">View Details →</span>
+                    <span class="zh">查看详情 →</span>
+                </a>
+        </div>
+    </main>
+
+    <nav class="dock">
+        <a href="#experiences" class="dock-item" title="Experiences">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        </a>
+        <a href="#research" class="dock-item" title="Research">
+            <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+        </a>
+        <a href="#blog" class="dock-item" title="Blog">
+            <svg viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+        </a>
+        <a href="#news" class="dock-item" title="News">
+            <svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+        </a>
+    </nav>
+
+    <script>
+        function toggleLanguage() {
+            const body = document.body;
+            const currentLang = body.getAttribute('data-lang');
+            const newLang = currentLang === 'en' ? 'zh' : 'en';
+            
+            body.setAttribute('data-lang', newLang);
+
+            // Toggle visibility
+            document.querySelectorAll('.en').forEach(el => {
+                el.style.display = newLang === 'en' ? (el.tagName === 'SPAN' ? 'inline' : 'block') : 'none';
+            });
+            document.querySelectorAll('.zh').forEach(el => {
+                el.style.display = newLang === 'zh' ? (el.tagName === 'SPAN' ? 'inline' : 'block') : 'none';
+            });
+        }
+        
+        function copyEmail() {
+            const email = "slii0329@student.monash.edu"; 
+            navigator.clipboard.writeText(email).then(() => {
+                const isEn = document.body.getAttribute('data-lang') === 'en';
+                alert(isEn ? "Email address copied to clipboard!" : "邮箱地址已复制到剪贴板！");
+            }).catch(err => {
+        alert("Failed to copy / 复制失败");
+            });
+        }
+
+        // Initialize state
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll('.zh').forEach(el => el.style.display = 'none');
+        });
+    </script>
+</body>
+</html>
