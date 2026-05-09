@@ -39,7 +39,7 @@
 
         if (fileName) {
             // 去 posts 文件夹寻找这个 md 文件
-            fetch(`blogs/${extreme-value-theory.md}`)
+            fetch(`blogs/${fileName}`)
                 .then(response => {
                     if (!response.ok) throw new Error("Article not found");
                     return response.text();
