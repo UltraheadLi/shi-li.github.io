@@ -28,32 +28,51 @@
 <body>
 
     <div class="container">
-        <a href="blog.html" class="back-btn">← Back to Blog list</a>
+        <a id="back-link" href="index.html" class="back-btn">← Back to Home</a>
         
         <div id="content">Loading article...</div>
     </div>
 
     <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const fileName = urlParams.get('file');
+    const urlParams = new URLSearchParams(window.location.search);
+    const fileName = urlParams.get('file');
 
-        if (fileName) {
-            // 去 posts 文件夹寻找这个 md 文件
-            fetch(`blogs/${fileName}`)
-                .then(response => {
-                    if (!response.ok) throw new Error("Article not found");
-                    return response.text();
-                })
-                .then(text => {
-                    document.getElementById('content').innerHTML = marked.parse(text);
-                    hljs.highlightAll();
-                })
-                .catch(err => {
-                    document.getElementById('content').innerHTML = "<h1>404 Not Found</h1><p>Sorry, the article could not be loaded.</p>";
-                });
-        } else {
-            document.getElementById('content').innerHTML = "<h1>Error</h1><p>No article specified in URL.</p>";
-        }
+    // === Blog post registry — add new posts here ===
+    const blogPosts = [
+        { file: "extreme-value-theory.md", title: "Extreme Value Theory", titleZh: "极值理论", date: "2025" }
+        // Add more: { file: "new-post.md", title: "Title", titleZh: "中文", date: "2025" }
+    ];
+
+    if (fileName) {
+        // Viewing a single article — back button goes to blog list
+        document.getElementById('back-link').href = 'blog.html';
+        document.getElementById('back-link').textContent = '← Back to Blog list';
+
+        fetch(`blogs/${fileName}`)
+            .then(response => {
+                if (!response.ok) throw new Error("Article not found");
+                return response.text();
+            })
+            .then(text => {
+                document.getElementById('content').innerHTML = marked.parse(text);
+                hljs.highlightAll();
+            })
+            .catch(err => {
+                document.getElementById('content').innerHTML = "<h1>404 Not Found</h1><p>Sorry, the article could not be loaded.</p>";
+            });
+    } else {
+        // No file param — show blog list
+        let html = '<h1>Blog</h1><ul style="list-style: none; padding: 0;">';
+        blogPosts.forEach(post => {
+            html += `
+                <li style="margin-bottom: 16px; padding: 16px; background: rgba(0,0,0,0.03); border-radius: 12px;">
+                    <a href="blog.html?file=${post.file}" style="text-decoration: none; color: #0071e3; font-size: 1.2rem; font-weight: 600;">${post.title}</a>
+                    <span style="display: block; font-size: 0.9rem; color: #515154; margin-top: 4px;">${post.date}</span>
+                </li>`;
+        });
+        html += '</ul>';
+        document.getElementById('content').innerHTML = html;
+    }
     </script>
 </body>
 </html>
